@@ -2,19 +2,15 @@ pragma solidity ^0.5.8;
 
 contract RaccoonRegistry {
 
-    mapping(bytes32 => uint) public cards;
+    mapping(bytes32 => uint) cards;
 
     //TODO: issuer filtering
-    function issueCard(bytes32 digest, uint exp) public returns (bool) {
+    function issueCard(bytes32 digest, uint exp) public {
         cards[digest] = exp;
-        return true;
     }
 
-    function hasCard(address party, bytes32 cardType) public view returns (bool) {
-        bytes32 digest = keccak256(abi.encodePacked(party, cardType));
-        uint exp = cards[digest];
-        return (exp > 0 && exp < block.timestamp);
-
+    function hasCard(bytes32 digest) public view returns (bool) {
+        return cards[digest] > block.timestamp;
     }
 
 }
